@@ -1,7 +1,7 @@
 # TicTacToe
 Classic Game against AI
 
-# [LIVE Website](https://kalmesh-ms.github.io/TicTacToe/)
+## [LIVE Website](https://kalmesh-ms.github.io/TicTacToe/)
 
 ## Objectives 
 
