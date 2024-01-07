@@ -1,26 +1,30 @@
-gameBoard = function(){
+function Gameboard(){
+    const rows = 3;
+    const columns =3;
+    const board = [];
 
-gameBoardArr = [1,2,3,4,5,6,7,8,9]
-
-
-    function remove (value){
-        let index = gameBoardArr.indexOf(value);
-        if ( index > -1){
-            valueArr = gameBoardArr.splice(index , 1);
-            value = valueArr.pop();
-            return value;
+    for (let i = 0; i< rows ; i++)
+    {
+        board[i]=[];
+        for (let j=0; j< columns; j++)
+        {
+            board[j].push(Cell());
         }
-        else return;
     }
 
+const getBoard = () => board;
 
-return {gameBoardArr, remove};
-
+return { getBoard};
 }
 
-let x = gameBoard().remove(9);
-let y = gameBoard().remove(10);
+function Cell(){
+    let value = 0;
 
-console.log(x);
-console.log(x);
-console.log(gameBoardArr);
+    const crossDiv = (player) => {
+        value = player;
+    };
+
+    const getValue = () => value;
+
+    return {crossDiv , getValue}
+}
