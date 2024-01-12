@@ -12,6 +12,16 @@ function gameBoard (){
         name : "playerTwo",
         marker : "O",
         crossBoxValues : [],
+        fun: () => {
+            console.log("fun");
+        }
     }
+
+    console.log("gameON")
+
+    return { hashBoard, PlayerO , PlayerX};
 }
 
+gameBoard();
+
+ gameBoard().PlayerO.fun();
