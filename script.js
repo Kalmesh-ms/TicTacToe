@@ -12,16 +12,39 @@ function gameBoard (){
         name : "playerTwo",
         marker : "O",
         crossBoxValues : [],
-        fun: () => {
-            console.log("fun");
-        }
     }
-
-    console.log("gameON")
 
     return { hashBoard, PlayerO , PlayerX};
 }
 
-gameBoard();
+function gameController (){
 
- gameBoard().PlayerO.fun();
+    board = gameBoard().hashBoard;
+
+
+    getPlayerO = gameBoard().PlayerO;
+    getPlayerX = gameBoard().PlayerX;
+
+    console.log(getPlayerO)
+
+    function cross (value){
+        let index = board.indexOf(value);
+        if ( index > -1){
+            valueArr = board.splice(index , 1);
+            value = valueArr.pop();
+            this.crossBoxValues.push(value);
+            return value;
+        }
+        else return;
+    }
+
+
+
+
+    return {cross, getPlayerO , getPlayerX};
+
+
+}
+
+gameController();
+
