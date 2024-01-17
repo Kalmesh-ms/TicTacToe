@@ -7,23 +7,27 @@ html, body{
 }
 
 body{
-    background-color: black;
+    background-color: #151515;
 }
 
-.select-box{
+.play-board, .select-box{
     position: absolute;
     top : 50%;
     left : 50%;
     transform: translate(-50% , -50%);
+}
+
+.select-box{
     background-color: #f44336;
     color: white;
     padding: 20px 25px 25px;
     border-radius: 5px;
     max-width: 330px;
     width: 100%;
+    display: none;
 }
 
-.select-box .header{
+.select-box header{
     font-size: 23px;
     font-weight: 600;
     padding-bottom: 10px;
@@ -31,35 +35,91 @@ body{
 
 }
 
-.select-box-text{
+.select-box .title{
     font-size: 18px;
     font-weight: 500;
     margin : 20px 0;
 }
 
-.select-box .select-buttons{
+.select-box .options{
     display: flex;
     width: 100%;
 }
 
-.select-buttons button{
+.options button{
     width: 100%;
     font-size: 18px;
     font-weight: 500;
     padding: 8px 0;
     border: none;
     outline: none;
-    background-color: black;
+    background-color: #151515;
     border-radius: 5px;
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.select-buttons button:hover{
+.options button:hover{
     transform: scale(0.9);
 
 }
 
-.select-buttons button:first-child{
+.options button:first-child{
     margin-right: 10px;
 }
+
+.play-board .details{
+    background-color: #f44336;
+    padding: 7px;
+    border-radius: 5px;
+}
+.play-board .details .players{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    position: relative;
+}
+.play-board .details span{
+    width: 100%;
+    color: #151515;
+    border-radius: 5px;
+    padding: 7px 0;
+    font-size: 19px;
+    font-weight: 500;
+    cursor: default;
+    text-align:center
+}
+.details span.active{
+    color:#151515 ;
+    background: whitesmoke;
+}
+
+.details .slider{
+    position: absolute;
+    top: 0 ;
+    left: 0;
+    height: 100%;
+    width: 50%;
+
+}
+
+.play-area {
+    margin-top : 20px;
+}
+.play-board section {
+    display: flex;
+}
+.play-board section span{
+    display: block;
+    margin: 2px;
+    height: 80px;
+    width: 80px;
+    background-color: #f44336;
+    border-radius: 5px;
+    font-size: 40px;
+    text-align: center;
+    line-height: 80px;
+    color: whitesmoke;
+}
+
+
