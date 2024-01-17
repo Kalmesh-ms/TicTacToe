@@ -10,7 +10,7 @@ body{
     background-color: #151515;
 }
 
-.play-board, .select-box{
+.play-board, .select-box , .result-box{
     position: absolute;
     top : 50%;
     left : 50%;
@@ -59,7 +59,8 @@ body{
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.options button:hover{
+.options button:hover,
+.result-box .btn button:hover{
     transform: scale(0.9);
 
 }
@@ -67,7 +68,9 @@ body{
 .options button:first-child{
     margin-right: 10px;
 }
-
+.play-board{
+    display: none;
+}
 .play-board .details{
     background-color: #f44336;
     padding: 7px;
@@ -121,4 +124,42 @@ body{
     color: whitesmoke;
 }
 
+.result-box {
+    background-color: #f44336;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 150px;
+    width: 100%;
+}
 
+.result-box .won-text{
+    font-size: 25px;
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.result-box .won-text p{
+    font-weight: 600;
+    margin: 0 5px;
+}
+
+.result-box .btn{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.result-box .btn button{
+    font-size: 18px;
+    font-weight: 500;
+    padding: 8px 20px;
+    border: none;
+    outline: none;
+    background-color: #151515;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
