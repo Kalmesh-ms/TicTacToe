@@ -38,6 +38,7 @@ function clickedBox(element){
         players.classList.add("active");
         element.setAttribute("id" , playerSign)
     }
+    selectWinner();
     element.style.pointerEvents = "none" ;
     let randomDelayTime = ((Math.random()* 1000) + 100).toFixed();
     setTimeout(() => {
@@ -66,16 +67,24 @@ function bot(){
             players.classList.remove("active");
             allBox[randomBox].setAttribute("id" , playerSign);
         }
+        selectWinner();
     }
     allBox[randomBox].style.pointerEvents = "none";
+    playerSign = "X";
 }
 
 function getId(idName){
-    return document.querySelector(".box" + idName).id
+    return document.querySelector(".box" + idName).id;
 }
 
 function checkForWinner(val1 , val2 , val3 , sign){
     if(getId(val1) == sign && getId(val2) == sign && getId(val3) == sign){
         return true;
+    }
+}
+
+function selectWinner(){
+    if(checkForWinner(1,2,3,playerSign)|| checkForWinner(4,5,6,playerSign)||checkForWinner(7,8,9,playerSign)||checkForWinner(1,5,9,playerSign)||checkForWinner(3,5,7,playerSign)||checkForWinner(1,4,7,playerSign)||checkForWinner(2,5,8,playerSign)||checkForWinner(3,6,9,playerSign)){
+        console.log(playerSign + " " + "is Winner")
     }
 }
