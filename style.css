@@ -87,11 +87,8 @@ body{
     font-size: 19px;
     font-weight: 500;
     cursor: default;
-    text-align:center
-}
-.details span.active{
-    color:#151515 ;
-    background: whitesmoke;
+    text-align:center;
+    z-index: 5;
 }
 
 .details .slider{
@@ -100,7 +97,9 @@ body{
     left: 0;
     height: 100%;
     width: 50%;
-
+    background: whitesmoke;
+    border-radius: 5px;
+    z-index: 2;
 }
 
 .play-area {
