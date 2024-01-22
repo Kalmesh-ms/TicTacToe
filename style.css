@@ -19,8 +19,8 @@ body{
 }
 
 .select-box{
-    background-color: #f44336;
-    color: white;
+    background-color: rgba(255, 213, 0, 0.986);
+    color: rgb(0, 0, 0);
     padding: 20px 25px 25px;
     border-radius: 5px;
     max-width: 330px;
@@ -85,7 +85,7 @@ body{
     transform: translate(-50% ,-50%) scale(1);
 }
 .play-board .details{
-    background-color: #f41808;
+    background-color: rgba(255, 213, 0, 0.986);
     padding: 7px;
     border-radius: 5px;
 }
@@ -135,16 +135,16 @@ body{
     margin: 2px;
     height: 80px;
     width: 80px;
-    background-color: #f41808;
+    background-color: rgba(255, 213, 0, 0.986);
     border-radius: 5px;
     font-size: 40px;
     text-align: center;
     line-height: 80px;
-    color: whitesmoke;
+    color: rgb(8, 8, 8);
 }
 
 .result-box {
-    background-color: #f41808;
+    background-color: rgba(255, 213, 0, 0.986);
     padding: 20px;
     border-radius: 5px;
     max-width: 150px;
@@ -166,7 +166,7 @@ body{
     font-weight: 500;
     display: flex;
     justify-content: center;
-    color: white;
+    color: rgb(0, 0, 0);
 }
 
 .result-box .won-text p{
