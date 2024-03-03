@@ -1,121 +1,166 @@
-const selectBox = document.querySelector('.select-box'),
-selectXBtn = selectBox.querySelector('.playerX'),
-selectOBtn = selectBox.querySelector('.playerO'),
-playBoard = document.querySelector('.play-board'),
-allBox = document.querySelectorAll('section span'),
-players = document.querySelector('.players'),
-resultBox = document.querySelector('.result-box'),
-wonText = resultBox.querySelector('.won-text'),
-restartBtn = resultBox.querySelector('button');
+let ogBoard;
+const human = "O";
+const ai = "X";
 
+const winCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [6, 4, 2],
+];
 
-window.onload = () => {
-    for (let i = 0; i < allBox.length; i++) {  
-        allBox[i].setAttribute("onclick", "clickedBox(this)");
-    }
+const cells = Array.from(document.querySelectorAll(".cell"));
+console.log(cells);
 
-    selectXBtn.onclick = () =>{
-        selectBox.classList.add("hide");
-        playBoard.classList.add("show");
-    }
-    selectOBtn.onclick = () =>{
-        selectBox.classList.add("hide");
-        playBoard.classList.add("show");
-        players.setAttribute("class", "players active player");
-    }
+startGame();
+
+function startGame() {
+  document.querySelector(".endgame").style.display = "none";
+  ogBoard = Array.from(Array(9).keys());
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].innerText = "";
+    cells[i].style.removeProperty("background-color");
+    cells[i].addEventListener("click", turnClick, false);
+  }
 }
 
-let playerXIcon = "fas fa-times";
-let playerOIcon = "far fa-circle";
-let playerSign = "X";
-let runBot = true;
-
-//player function
-function clickedBox(element){
-    if(players.classList.contains("player")){
-        element.innerHTML = `<i class="${playerOIcon}"></i>`
-        players.classList.add("active");
-        playerSign = "O"
-        element.setAttribute("id" , playerSign)
-    }else{
-        element.innerHTML = `<i class="${playerXIcon}"></i>`
-        players.classList.add("active");
-        element.setAttribute("id" , playerSign)
-    }
-    selectWinner();
-    playBoard.style.pointerEvents = "none";
-    element.style.pointerEvents = "none" ;
-    let randomDelayTime = ((Math.random()* 1000) + 100).toFixed();
-    setTimeout(() => {
-        bot(runBot);
-    }, randomDelayTime);
+function turnClick(square) {
+  if (typeof ogBoard[square.target.id] == "number") {
+    turn(square.target.id, human);
+    if (!checkTie()) turn(bestSpot(), ai);
+  }
 }
 
-//bot function
-function bot(runBot){
-    if(runBot){
-        playerSign = "O";
-    let array = [];
-    for (let i = 0; i < allBox.length; i++) {
-        if(allBox[i].childElementCount == 0){
-            array.push(i);
-        }
-    }
-    let randomBox = array[Math.floor(Math.random() * array.length)];
-    if (array.length > 0 ){
-        if(players.classList.contains("player")){
-            allBox[randomBox].innerHTML = `<i class="${playerXIcon}"></i>`
-            players.classList.remove("active");
-            playerSign = "X";
-            allBox[randomBox].setAttribute("id" , playerSign);
-        }else{
-            allBox[randomBox].innerHTML = `<i class="${playerOIcon}"></i>`
-            players.classList.remove("active");
-            allBox[randomBox].setAttribute("id" , playerSign);
-        }
-        selectWinner();
-    }
-    allBox[randomBox].style.pointerEvents = "none";
-    playBoard.style.pointerEvents = "auto";
-    playerSign = "X";
-    }
+function turn(squareId, player) {
+  ogBoard[squareId] = player;
+  document.getElementById(squareId).innerText = player;
+  let gameWon = checkWin(ogBoard, player); // the checkWin returns an object
+  // gameWon object contains index reference to the win in winCombos
+  // and player who has won
+  if (gameWon) gameOver(gameWon);
 }
 
-function getId(idName){
-    return document.querySelector(".box" + idName).id;
+function checkWin(board, player) {
+  // board.reduce((a, e, i) => (e === player ? a.push(i) : a), []);
+  //here reduce function returns an array("a" - accumulator)
+  // a is init to []
+  // e is every element of board (array on which reduce is called upon )
+  // i is index of the element
+  // reduce takes 2 param - a, e ;1 optional param - i.
+  // we return the a array value to store in "plays"
+  // to store the "boxes crossed" by players.
+  let plays = board.reduce((a, e, i) => {
+    if (e === player) {
+      a.push(i);
+    }
+    return a;
+  }, []);
+
+  // now we have plays which stores all the values played by player
+  // we'll check if those values in player are going to match the win(index) in winCombos
+
+  let gameWon = null;
+  // checks every elem in win with plays.indexOf(elem)
+  //plays.indexOf(elem) returns :  index > 1 if found : else returns -1
+  // so if returns -1 , the win(index) combos is not complete so false and
+  // gameWon remains null a falsy value
+  for (const [index, win] of winCombos.entries()) {
+    if (win.every((elem) => plays.indexOf(elem) > -1)) {
+      gameWon = { index: index, player: player };
+      break;
+    }
+  }
+  return gameWon;
 }
 
-function checkForWinner(val1 , val2 , val3 , sign){
-    if(getId(val1) == sign && getId(val2) == sign && getId(val3) == sign){
-        return true;
-    }
+function gameOver(gameWon) {
+  for (let index of winCombos[gameWon.index]) {
+    document.getElementById(index).style.backgroundColor =
+      gameWon.player == human ? "lightblue" : "lightcoral";
+  }
+
+  for (let i = 0; i < cells.length; i++) {
+    cells[i].removeEventListener("click", turnClick, false);
+  }
+  declareWinner(gameWon.player == human ? "You Win!" : "RavenX Wins");
 }
 
-function selectWinner(){
-    if(checkForWinner(1,2,3,playerSign)|| checkForWinner(4,5,6,playerSign)||checkForWinner(7,8,9,playerSign)||checkForWinner(1,5,9,playerSign)||checkForWinner(3,5,7,playerSign)||checkForWinner(1,4,7,playerSign)||checkForWinner(2,5,8,playerSign)||checkForWinner(3,6,9,playerSign)){
-        runBot = false;
-        bot(runBot);
-        setTimeout(()=>{
-            playBoard.classList.remove("show");
-            resultBox.classList.add("show");
-           
-        }, 500 );
-        wonText.innerHTML = `<p>${playerSign}<p> Wins! `;
-    }
-    else{
-        if (getId(1)!= "" &&getId(2)!= "" &&getId(3)!= "" &&getId(4)!= "" &&getId(5)!= "" &&getId(6)!= "" &&getId(7)!= "" &&getId(8)!= "" &&getId(9)!= ""){
-            runBot = false;
-            bot(runBot);
-            setTimeout(()=>{
-                playBoard.classList.remove("show");
-                resultBox.classList.add("show");
-            
-            }, 500 );
-        wonText.innerHTML = `<p>XO<p> Draw! `;
-        }
-    }
+function declareWinner(who) {
+  document.querySelector(".endgame").style.display = "block";
+  document.querySelector(".endgame .text").innerText = who;
 }
 
-restartBtn.onclick = () => {
-    window.location.reload();
+function emptySquares() {
+  return ogBoard.filter((s) => typeof s == "number");
+}
+
+function bestSpot() {
+  return minmax(ogBoard, ai).index;
+}
+
+function checkTie() {
+  if (emptySquares().length == 0) {
+    for (let i = 0; i < cells.length; i++) {
+      cells[i].style.backgroundColor = "lightgreen";
+      cells[i].removeEventListener("click", turnClick, false);
+    }
+    declareWinner("Tie Game!");
+    return true;
+  }
+  return false;
+}
+
+function minmax(newBoard, player) {
+  let getSpots = emptySquares(newBoard);
+  if (checkWin(newBoard, player)) {
+    return { score: -1 };
+  } else if (checkWin(newBoard, ai)) {
+    return { score: 1 };
+  } else if (getSpots.length === 0) {
+    return { score: 0 };
+  }
+
+  let moves = [];
+  for (let i = 0; i < getSpots.length; i++) {
+    let move = {};
+    move.index = newBoard[getSpots[i]];
+    newBoard[getSpots[i]] = player;
+
+    if (player == ai) {
+      let result = minmax(newBoard, human);
+      move.score = result.score;
+    } else {
+      let result = minmax(newBoard, ai);
+      move.score = result.score;
+    }
+
+    newBoard[getSpots[i]] = move.index;
+
+    moves.push(move);
+  }
+
+  let bestMove;
+  if (player == ai) {
+    let bestScore = -Infinity;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    let bestScore = Infinity;
+    for (let i = 0; i < moves.length; i++) {
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+
+  return moves[bestMove];
 }
